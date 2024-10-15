@@ -7,6 +7,8 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { APP_PIPE } from '@nestjs/core';
 import { LoginModule } from './modules/login/login.module';
 import { UsersModule } from './modules/users/users.module';
+import { RedesSociaisModule } from './modules/redesSociais/redesSociais.module';
+import { RedesSociaisController } from './modules/redesSociais/redesSociais.controller';
 @Module({
   imports: [ 
     JwtModule.register({
@@ -17,7 +19,8 @@ import { UsersModule } from './modules/users/users.module';
     dest: './uploads/temp', 
   }),
   LoginModule,
-  UsersModule
+  UsersModule,
+  RedesSociaisModule
   ],
   controllers: [AppController],
   providers: [
@@ -36,6 +39,7 @@ export class AppModule implements NestModule{
         'login/(.*)',
       )
       .forRoutes(
+        RedesSociaisController
       )
   }
 }
