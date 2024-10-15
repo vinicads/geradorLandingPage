@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model autenticacao {
+  idautenticacao Int                  @id @default(autoincrement())
+  email          String?              @db.VarChar(100)
+  senha          String?              @db.VarChar(80)
+  info    info[]        @relation("UserInfo")
+  servicos       servicos[]           @relation("UserServicos")
+  redesSociais    redesSociais[]      @relation("UserRedesSociais")
+  sobre          sobre[]              @relation("UserSobre")
+  contato        contato[]            @relation("UserContato")
+}
+
+model info {
+  idInfo   Int     @id @default(autoincrement())
+  titulo         String? @db.VarChar(45)
+  texto          String? @db.Text
+  logo           String? @db.Text
+  imagemFundo    String? @db.Text
+  corPrincipal   String? @db.VarChar(45)
+  corSecundaria  String? @db.VarChar(45)
+  idautenticacao Int
+  autenticacao   autenticacao @relation("UserInfo", fields: [idautenticacao], references: [idautenticacao])
+}
+
+model servicos {
+  idServicos     Int     @id @default(autoincrement())
+  titulo         String? @db.VarChar(45)
+  texto          String? @db.Text
+  logo           String? @db.Text
+  idautenticacao Int
+  autenticacao   autenticacao @relation("UserServicos", fields: [idautenticacao], references: [idautenticacao])
+}
+
+model redesSociais {
+  idRedesSociais Int     @id @default(autoincrement())
+  nome           String? @db.VarChar(45)
+  link           String? @db.Text
+  logo           String? @db.Text
+  idautenticacao Int
+  autenticacao   autenticacao @relation("UserRedesSociais", fields: [idautenticacao], references: [idautenticacao])
+}
+
+model sobre {
+  idSobre        Int     @id @default(autoincrement())
+  titulo         String? @db.VarChar(45)
+  descricao      String? @db.Text
+  foto           String? @db.Text
+  idautenticacao Int
+  autenticacao   autenticacao @relation("UserSobre", fields: [idautenticacao], references: [idautenticacao])
+}
+
+model contato {
+  idContato      Int     @id @default(autoincrement())
+  numero         String? @db.VarChar(45)
+  email          String? @db.Text
+  foto           String? @db.Text
+  idautenticacao Int
+  autenticacao   autenticacao @relation("UserContato", fields: [idautenticacao], references: [idautenticacao])
+}
+
