@@ -135,7 +135,7 @@ export class RedesSociaisService {
     }
   }
 
-  async getCurso(filters, start, quantity, req, res) {
+  async getAll(filters, start, quantity, req, res) {
     try {
       const myData = await this.usersFunctions.getMyData(req);
       if (!myData){

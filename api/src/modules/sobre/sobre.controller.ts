@@ -2,18 +2,18 @@ import { Controller, Get, Post, Body, Put, Param, Delete, Res, HttpStatus, HttpE
 import { response } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { MulterOptions, MulterFile } from 'multer';
-import { ServicosService } from './servicos.service';
-import { servicosDTO } from './dto/servicos.dto';
+import { SobreService } from './sobre.service';
+import { sobreDTO } from './dto/sobre.dto';
 
-@Controller('servicos')
-export class ServicosController {
-  constructor(private readonly ServicosService: ServicosService,) { }
+@Controller('sobre')
+export class SobreController {
+  constructor(private readonly SobreService: SobreService,) { }
   
   @Post()
   @UseInterceptors(FilesInterceptor('arquivos'))
   @UsePipes(ValidationPipe)
   async create(@Res() res: Response,
-    @Body("servicos") servicos: servicosDTO,
+    @Body("sobre") sobre: sobreDTO,
     @UploadedFiles() arquivos: MulterFile[],
     @Req() req: Request) {
       if (arquivos.length > 0){
@@ -23,7 +23,7 @@ export class ServicosController {
           throw new HttpException("Tipo de arquivo não aceito.", HttpStatus.BAD_REQUEST);
         }
       }
-        return this.ServicosService.create(servicos, arquivos, res, req);
+        return this.SobreService.create(sobre, arquivos, res, req);
   }
 
   @Get()
@@ -40,13 +40,13 @@ export class ServicosController {
         };
       }
 
-        return this.ServicosService.getAll(filters, start, quantity, req ,res);
+        return this.SobreService.getAll(filters, start, quantity, req ,res);
   }
 
   @Put(':id')
   @UseInterceptors(FilesInterceptor('arquivos'))
   async update(@Res() res: Response, @Param('id') id: number,
-  @Body("servicos") servicos: servicosDTO,
+  @Body("sobre") sobre: sobreDTO,
   @UploadedFiles() arquivos: MulterFile[],
     @Req() req: Request) {
       if (arquivos.length > 0){
@@ -56,12 +56,12 @@ export class ServicosController {
           throw new HttpException("Tipo de arquivo não aceito.", HttpStatus.BAD_REQUEST);
         }
       }
-      return this.ServicosService.update(id, servicos, arquivos, req, res);
+      return this.SobreService.update(id, sobre, arquivos, req, res);
   }
 
   @Delete(':id')
   async remove(@Res() res: Response, @Param('id') id: number, @Req() req: Request) {
-    return this.ServicosService.delete(id, req, res);
+    return this.SobreService.delete(id, req, res);
   }
 
 

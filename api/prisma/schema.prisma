@@ -61,7 +61,6 @@ model contato {
   idContato      Int     @id @default(autoincrement())
   numero         String? @db.VarChar(45)
   email          String? @db.Text
-  foto           String? @db.Text
   idautenticacao Int
   autenticacao   autenticacao @relation("UserContato", fields: [idautenticacao], references: [idautenticacao])
 }

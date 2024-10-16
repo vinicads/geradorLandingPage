@@ -40,7 +40,7 @@ export class RedesSociaisController {
         };
       }
 
-        return this.RedesSociaisService.getCurso(filters, start, quantity, req ,res);
+        return this.RedesSociaisService.getAll(filters, start, quantity, req ,res);
   }
 
   @Put(':id')

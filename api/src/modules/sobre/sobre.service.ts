@@ -3,95 +3,95 @@ import { PrismaService } from 'src/database/PrismaService';
 import { LoginFunctions } from '../login/functions/login.functions';
 import { functionService } from 'src/middlewares/geralFunctions';
 import * as path from 'path';
-import { servicosDTO } from './dto/servicos.dto';
+import { sobreDTO } from './dto/sobre.dto';
 import { usersFunctions } from '../users/functions/users.functions';
 @Injectable()
-export class ServicosService {
+export class SobreService {
   constructor(private prisma: PrismaService,
     private readonly loginFunctions: LoginFunctions,
     private readonly usersFunctions: usersFunctions,
     private readonly geralFunctions: functionService,) { }
 
-  async create(data: servicosDTO, arquivos, res, req) {
+  async create(data: sobreDTO, arquivos, res, req) {
     try {
       const myData = await this.usersFunctions.getMyData(req);
       if (!myData){
         return res.status(401).send("Não foi possível obter seus dados.");
       }
 
-     let servicosCreated = await this.prisma.servicos.create({
+     let sobreCreated = await this.prisma.sobre.create({
       data: {
         titulo: data.titulo,
-        texto: data.texto,
+        descricao: data.descricao,
         idautenticacao: Number(myData.idautenticacao)
       }
      })
      
      if (arquivos.length > 0) {
       const caminhoUsuarios = path.join('usuarios', String(myData.idautenticacao))
-    const servicosCaminho = path.join(caminhoUsuarios, 'servicos')
-    const servicosNovo = path.join(servicosCaminho, String(servicosCreated.idServicos))
-      let caminhoBanco = path.join(servicosNovo, arquivos[0].originalname)
-      await this.geralFunctions.deletePath(servicosNovo);
-      await this.geralFunctions.saveFiles(arquivos, servicosNovo);
-      await this.prisma.servicos.update({
+    const sobreCaminho = path.join(caminhoUsuarios, 'sobre')
+    const sobreNovo = path.join(sobreCaminho, String(sobreCreated.idSobre))
+      let caminhoBanco = path.join(sobreNovo, arquivos[0].originalname)
+      await this.geralFunctions.deletePath(sobreNovo);
+      await this.geralFunctions.saveFiles(arquivos, sobreNovo);
+      await this.prisma.sobre.update({
         data: {
-          logo: caminhoBanco
+          foto: caminhoBanco
         },
         where: {
-          idServicos: Number(servicosCreated.idServicos)
+          idSobre: Number(sobreCreated.idSobre)
         }
       });
     }
-     return res.status(200).send("Serivico cadastrado com sucesso.");
+     return res.status(200).send("Sobre cadastrado com sucesso.");
     } catch (error) {
       return res.status(500).send("Dados incorretos." + error);
     }
   }
 
-  async update(id, data: servicosDTO, arquivos,req, res){
+  async update(id, data: sobreDTO, arquivos,req, res){
     try {
       const myData = await this.usersFunctions.getMyData(req);
       if (!myData){
         return res.status(401).send("Não foi possível obter seus dados.");
       }
 
-     const servicosExists = await this.prisma.servicos.findFirst({
+     const sobreExists = await this.prisma.sobre.findFirst({
       where: {
-        idServicos: Number(id)
+        idSobre: Number(id)
       }
      });
 
-     if (!servicosExists){
-      return res.status(404).send("O servico enviado não foi encontrado no sistema.");
+     if (!sobreExists){
+      return res.status(404).send("O sobre enviado não foi encontrado no sistema.");
      }
 
-     if (servicosExists.idautenticacao != myData.idautenticacao){
-      return res.status(401).send("Você não tem permissão para atualizar o servico de outro usuario.");
+     if (sobreExists.idautenticacao != myData.idautenticacao){
+      return res.status(401).send("Você não tem permissão para atualizar o sobre de outro usuario.");
      }
 
      if (arquivos.length > 0) {
       const caminhoUsuarios = path.join('usuarios', String(myData.idautenticacao))
-      const servicosCaminho = path.join(caminhoUsuarios, 'servicos')
-      const servicosNovo = path.join(servicosCaminho, String(servicosExists.idServicos))
-        let caminhoBanco = path.join(servicosNovo, arquivos[0].originalname)
-      await this.geralFunctions.deletePath(servicosNovo);
-      await this.geralFunctions.saveFiles(arquivos, servicosNovo);
-      data.logo = caminhoBanco
+      const sobreCaminho = path.join(caminhoUsuarios, 'sobre')
+      const sobreNovo = path.join(sobreCaminho, String(sobreExists.idSobre))
+        let caminhoBanco = path.join(sobreNovo, arquivos[0].originalname)
+      await this.geralFunctions.deletePath(sobreNovo);
+      await this.geralFunctions.saveFiles(arquivos, sobreNovo);
+      data.foto = caminhoBanco
     }
 
-     await this.prisma.servicos.update({
+     await this.prisma.sobre.update({
       where: {
-        idServicos: Number(id)
+        idSobre: Number(id)
       },
       data:{
         titulo: data.titulo,
-        texto: data.texto,
-        logo: data.logo
+        descricao: data.descricao,
+        foto: data.foto
       }
      })
 
-     return res.status(200).send("Servico atualizado com sucesso.");
+     return res.status(200).send("Sobre atualizado com sucesso.");
     } catch (error) {
       return res.status(500).send("Dados incorretos." + error);
     }
@@ -104,18 +104,18 @@ export class ServicosService {
         return res.status(401).send("Não foi possível obter seus dados.");
       }
 
-      const servicosExists = await this.prisma.servicos.findFirst({
+      const sobreExists = await this.prisma.sobre.findFirst({
         where: {
-          idServicos: Number(id)
+          idSobre: Number(id)
         }
        });
   
-       if (!servicosExists){
-        return res.status(404).send("O servico enviado não foi encontrado no sistema.");
+       if (!sobreExists){
+        return res.status(404).send("O sobre enviado não foi encontrado no sistema.");
        }
   
-       if (servicosExists.idautenticacao != myData.idautenticacao){
-        return res.status(401).send("Você não tem permissão para apagar o servico de outro usuario.");
+       if (sobreExists.idautenticacao != myData.idautenticacao){
+        return res.status(401).send("Você não tem permissão para apagar o sobre de outro usuario.");
        }
 
      await this.prisma.servicos.delete({
@@ -125,11 +125,11 @@ export class ServicosService {
      })
 
     const caminhoUsuarios = path.join('usuarios', String(myData.idautenticacao))
-    const servicos = path.join(caminhoUsuarios, 'servicos')
-    const servicosID = path.join(servicos, String(servicosExists.idServicos))
-    await this.geralFunctions.deletePath(servicosID);
+    const sobre = path.join(caminhoUsuarios, 'sobre')
+    const sobreID = path.join(sobre, String(sobreExists.idSobre))
+    await this.geralFunctions.deletePath(sobreID);
 
-     return res.status(200).send("O servico foi deletado do sistema");
+     return res.status(200).send("O sobre foi deletado do sistema");
     } catch (error) {
       return res.status(500).send("Dados incorretos." + error);
     }
@@ -143,7 +143,7 @@ export class ServicosService {
       }
 
      filters.idautenticacao = Number(myData.idautenticacao)
-      var contagem = await this.prisma.servicos.count({
+      var contagem = await this.prisma.sobre.count({
         where: filters
       });
 
@@ -155,7 +155,7 @@ export class ServicosService {
         quantity = contagem
       }
 
-      var data = await this.prisma.servicos.findMany({
+      var data = await this.prisma.sobre.findMany({
         where: filters,
         skip: Number(start),
         take: Number(quantity),
@@ -165,10 +165,10 @@ export class ServicosService {
       });
 
       if (Array.isArray(data) && data.length === 0) {
-        return res.status(404).send("Nenhum servico encontrado.");
+        return res.status(404).send("Nenhum sobre encontrado.");
       } else {
         var newData = {
-          "servicos": data,
+          "sobre": data,
           "count": contagem
         }
         return res.status(200).send(newData);
