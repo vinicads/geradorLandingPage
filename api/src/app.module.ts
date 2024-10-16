@@ -9,6 +9,7 @@ import { LoginModule } from './modules/login/login.module';
 import { UsersModule } from './modules/users/users.module';
 import { RedesSociaisModule } from './modules/redesSociais/redesSociais.module';
 import { RedesSociaisController } from './modules/redesSociais/redesSociais.controller';
+import { ServicosModule } from './modules/servicos/titulo.module';
 @Module({
   imports: [ 
     JwtModule.register({
@@ -20,7 +21,8 @@ import { RedesSociaisController } from './modules/redesSociais/redesSociais.cont
   }),
   LoginModule,
   UsersModule,
-  RedesSociaisModule
+  RedesSociaisModule,
+  ServicosModule
   ],
   controllers: [AppController],
   providers: [
