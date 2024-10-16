@@ -10,6 +10,11 @@ import { UsersModule } from './modules/users/users.module';
 import { RedesSociaisModule } from './modules/redesSociais/redesSociais.module';
 import { RedesSociaisController } from './modules/redesSociais/redesSociais.controller';
 import { ServicosModule } from './modules/servicos/titulo.module';
+import { SobreModule } from './modules/sobre/sobre.module';
+import { ServicosController } from './modules/servicos/servicos.controller';
+import { SobreController } from './modules/sobre/sobre.controller';
+import { ContatoModule } from './modules/contato/contato.module';
+import { ContatoController } from './modules/contato/contato.controller';
 @Module({
   imports: [ 
     JwtModule.register({
@@ -22,7 +27,9 @@ import { ServicosModule } from './modules/servicos/titulo.module';
   LoginModule,
   UsersModule,
   RedesSociaisModule,
-  ServicosModule
+  ServicosModule,
+  SobreModule,
+  ContatoModule,
   ],
   controllers: [AppController],
   providers: [
@@ -41,7 +48,10 @@ export class AppModule implements NestModule{
         'login/(.*)',
       )
       .forRoutes(
-        RedesSociaisController
+        RedesSociaisController,
+        ServicosController,
+        SobreController,
+        ContatoController
       )
   }
 }
