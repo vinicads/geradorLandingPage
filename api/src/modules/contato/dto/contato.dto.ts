@@ -8,6 +8,11 @@ export class contatoDTO {
     @IsNotEmpty({message: "Numero precisa ser preenchido. [numero]"})
     numero: string;
 
+    @MaxLength(8, {message: "O limite de dígitos do CEP foi atingido. [cep]"})
+    @IsString({message:"CEP deve ser uma string. [cep]"})
+    @IsNotEmpty({message: "CEP precisa ser preenchido. [cep]"})
+    cep: string;
+
     @IsString({message:"Email deve ser uma string. [email]"})
     @IsNotEmpty({message: "Email precisa ser preenchido. [email]"})
     email: string;

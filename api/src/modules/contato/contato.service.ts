@@ -38,6 +38,7 @@ export class ContatoService {
           data: {
             email: data.email,
             numero: data.numero,
+            cep: data.cep,
             idautenticacao: Number(myData.idautenticacao)
           }
         })

@@ -4,14 +4,14 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ContatoService } from './contato.service';
 import { contatoDTO } from './dto/contato.dto';
 
-@Controller('sobre')
+@Controller('contato')
 export class ContatoController {
   constructor(private readonly ContatoService: ContatoService,) { }
   
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Res() res: Response,
-    @Body("sobre") sobre: contatoDTO,
+    @Body("contato") sobre: contatoDTO,
     @Req() req: Request) {
         return this.ContatoService.create(sobre, res, req);
   }
